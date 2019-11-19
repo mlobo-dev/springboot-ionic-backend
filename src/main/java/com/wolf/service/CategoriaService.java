@@ -7,15 +7,17 @@ import org.springframework.stereotype.Service;
 
 import com.wolf.domain.Categoria;
 import com.wolf.repositories.CategoriaRepository;
+import com.wolf.service.exception.ObjectNotFoundException;
 
 @Service
 public class CategoriaService {
 
 	@Autowired
-	private CategoriaRepository repository;
+	private CategoriaRepository repo;
 
-	public Categoria buscar(Integer id) {
-		Optional<Categoria> obj = repository.findById(id);
-		return obj.get();
+	public Categoria find(Integer id) {
+		Optional<Categoria> obj = repo.findById(id);
+		return obj.orElseThrow(() -> new ObjectNotFoundException(
+				"Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
 	}
 }
