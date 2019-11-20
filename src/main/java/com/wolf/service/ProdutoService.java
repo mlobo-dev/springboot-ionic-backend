@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.wolf.domain.Produto;
 import com.wolf.repositories.ProdutoRepository;
+import com.wolf.service.exception.ObjectNotFoundException;
 
 @Service
 public class ProdutoService {
@@ -16,6 +17,11 @@ public class ProdutoService {
 
 	public Produto buscar(Integer id) {
 		Optional<Produto> obj = repository.findById(id);
-		return obj.get();
+		if(obj.isPresent()) {
+			return obj.get();
+		}else {
+			throw new ObjectNotFoundException("Id não encontrado");
+		}
+			
 	}
 }
