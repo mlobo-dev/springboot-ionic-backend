@@ -7,19 +7,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.wolf.domain.Cidade;
-import com.wolf.service.CidadeService;
+import com.wolf.domain.Cliente;
+import com.wolf.service.ClienteService;
+
 
 @RestController
-@RequestMapping(value = "/cidades")
-public class CidadeResource {
-
+@RequestMapping(value="/clientes")
+public class ClienteResource {
+	
 	@Autowired
-	private CidadeService service;
-
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	private ClienteService service;
+	
+	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public ResponseEntity<?> find(@PathVariable Integer id) {
-		Cidade obj = service.find(id);
+		Cliente obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
 	}
 }
