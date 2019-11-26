@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.wolf.domain.enums.TipoCliente;
 
 @Entity
@@ -28,6 +29,7 @@ public class Cliente implements Serializable {
 	private String cpfOuCnpj;
 	private Integer tipo;
 
+	@JsonManagedReference
 	@OneToMany(mappedBy = "cliente")
 	private List<Endereco> enderecos = new ArrayList<>();
 
@@ -126,7 +128,9 @@ public class Cliente implements Serializable {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (!(obj instanceof Cliente))
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
 			return false;
 		Cliente other = (Cliente) obj;
 		if (id == null) {
