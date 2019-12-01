@@ -8,17 +8,19 @@ import javax.validation.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Length;
 
 import com.wolf.domain.Cliente;
+import com.wolf.service.validation.ClienteUpdate;
 
+@ClienteUpdate
 public class ClienteDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private Integer Id;
-	@NotEmpty(message ="Preenchimento obrigatório")
+	@NotEmpty(message = "Preenchimento obrigatório")
 	@Length(min = 5, max = 80, message = "O tamanho deve ser entre 5 e 80 caracteres")
 	private String nome;
-	
-	@NotEmpty(message ="Preenchimento obrigatório")
+
+	@NotEmpty(message = "Preenchimento obrigatório")
 	@Email(message = "Email inválido")
 	private String email;
 
