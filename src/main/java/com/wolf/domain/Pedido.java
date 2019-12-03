@@ -93,6 +93,14 @@ public class Pedido implements Serializable {
 		this.enderecoDeEntrega = enderecoDeEntrega;
 	}
 
+	public double getValorTotal() {
+		double soma = 0.0;
+		for (ItemPedido i : itens) {
+			soma += i.getSubTotal();
+		}
+		return soma;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
