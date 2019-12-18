@@ -14,11 +14,14 @@ import org.springframework.stereotype.Service;
 import com.wolf.domain.Cidade;
 import com.wolf.domain.Cliente;
 import com.wolf.domain.Endereco;
+import com.wolf.domain.enums.Perfil;
 import com.wolf.domain.enums.TipoCliente;
 import com.wolf.dto.ClienteDTO;
 import com.wolf.dto.ClienteNewDTO;
 import com.wolf.repositories.ClienteRepository;
 import com.wolf.repositories.EnderecoRepository;
+import com.wolf.security.UserSS;
+import com.wolf.service.exception.AuthorizationException;
 import com.wolf.service.exception.DataIntegrityException;
 import com.wolf.service.exception.ObjectNotFoundException;
 
@@ -35,6 +38,11 @@ public class ClienteService {
 	private BCryptPasswordEncoder pe;
 
 	public Cliente find(Integer id) {
+		UserSS user = UserService.authenticated();
+		if(user ==null || !user.hasHole(Perfil.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationException("Acesso Negado");
+		}
+		
 		Optional<Cliente> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
