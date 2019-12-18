@@ -4,8 +4,12 @@ import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.wolf.domain.Cliente;
 import com.wolf.domain.ItemPedido;
 import com.wolf.domain.PagamentoComBoleto;
 import com.wolf.domain.Pedido;
@@ -13,6 +17,8 @@ import com.wolf.domain.enums.EstadoPagamento;
 import com.wolf.repositories.ItemPedidoRepository;
 import com.wolf.repositories.PagamentoRepository;
 import com.wolf.repositories.PedidoRepository;
+import com.wolf.security.UserSS;
+import com.wolf.service.exception.AuthorizationException;
 import com.wolf.service.exception.ObjectNotFoundException;
 
 @Service
@@ -66,5 +72,16 @@ public class PedidoService {
 		itemPedidoRepository.saveAll(obj.getItens());
 		emailService.sendOrderConfirmationEmail(obj);
 		return obj;
+	}
+
+	public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+		UserSS user = UserService.authenticated();
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		Cliente cliente = clienteService.find(user.getId());
+		return repo.findByCliente(cliente, pageRequest);
 	}
 }
