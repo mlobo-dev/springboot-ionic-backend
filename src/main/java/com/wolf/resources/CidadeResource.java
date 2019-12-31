@@ -22,4 +22,5 @@ public class CidadeResource {
 		Cidade obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
 	}
+
 }

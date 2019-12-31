@@ -1,5 +1,6 @@
 package com.wolf.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,4 +21,9 @@ public class EstadoService {
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Estado.class.getName()));
 	}
+
+	public List<Estado> findAll() {
+		return repo.findAllByOrderByNome();
+	}
+
 }
